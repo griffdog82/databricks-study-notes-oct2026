@@ -1,0 +1,115 @@
+Lakehouse	One platform that mixes a data lake (cheap file storage) with data warehouse features (tables, ACID, SQL).
+Control plane vs compute plane	Control plane: Databricks-managed services (UI, jobs, notebooks). Compute plane: where clusters run and process data.
+All-purpose cluster	Interactive cluster for notebooks. Can be shared and restarted by hand. Costs more than job compute.
+Job cluster	Created when a job starts and ended when it finishes. Cheaper. Cannot be restarted by hand.
+Serverless compute	Compute that Databricks manages and starts fast. You do not pick nodes or runtime versions.
+Cluster auto termination	Shuts the cluster down after a set number of idle minutes to save cost.
+Magic command %sql / %python / %md	Changes the language of one notebook cell.
+%run	Runs another notebook inside the current one. Its variables and functions become available.
+dbutils.fs.ls(path)	Lists files at a path. Use display() to show the result as a table.
+Databricks Repos / Git folders	Connect notebooks to a Git repo to commit, push, pull, and switch branches from the UI.
+Delta Lake	Open table format: Parquet data files plus a transaction log. Gives ACID transactions on a data lake.
+_delta_log	Folder of JSON files that records every change (commit) to a Delta table. One JSON file per version.
+ACID	Atomic, Consistent, Isolated, Durable. Writes fully succeed or fully fail, and readers never see half-done writes.
+DESCRIBE DETAIL table	Shows table metadata: format, location, number of files, size.
+DESCRIBE HISTORY table	Lists every version of a Delta table: version number, time, operation, user.
+DESCRIBE EXTENDED table	Shows columns plus details like table type (managed/external), provider, and location.
+Time travel	Query an older version: SELECT * FROM t VERSION AS OF 3, or TIMESTAMP AS OF '2026-01-01'. Shorthand: t@v3.
+RESTORE TABLE	Rolls a table back to an older version: RESTORE TABLE t TO VERSION AS OF 5.
+OPTIMIZE	Compacts many small files into fewer large files to speed up reads.
+ZORDER BY	Used with OPTIMIZE. Groups related values in the same files so filters skip more data. Example: OPTIMIZE t ZORDER BY id.
+Liquid clustering	Newer replacement for partitioning and ZORDER. Set with CLUSTER BY. Keys can be changed later.
+VACUUM	Deletes old data files no longer used by the table. Default keeps 7 days. After VACUUM, time travel to older versions fails.
+VACUUM retention below 7 days	Blocked by default. Needs spark.databricks.delta.retentionDurationCheck.enabled = false. Risky.
+Delta table file format	Data stored as Parquet files, plus the _delta_log folder.
+Unity Catalog three-level namespace	catalog.schema.table
+Schema vs database	Same thing in Databricks. CREATE SCHEMA and CREATE DATABASE do the same.
+Managed table	Databricks controls both the metadata and the data files. DROP TABLE deletes the data (in Unity Catalog, after a short retention period).
+External table	Created with LOCATION. Databricks only controls metadata. DROP TABLE keeps the data files.
+Volume	Unity Catalog object for storing non-table files (CSV, JSON, images). Path: /Volumes/catalog/schema/volume/.
+Default table format in Databricks	Delta (managed tables can also be Iceberg).
+CREATE TABLE ... LOCATION 'path'	Makes an external table at that storage path.
+View (stored view)	Saved query. Persists in the catalog. Does not store data. Runs the query each time.
+Temporary view	Exists only in the current Spark session. Gone when the notebook detaches or the session ends.
+Global temporary view	Tied to the cluster, not one session. Stored in the global_temp schema. Query: SELECT * FROM global_temp.view_name.
+SHOW TABLES	Lists tables and views. isTemporary column shows temp views.
+Query a file directly	SELECT * FROM format.`path`  e.g. json.`/Volumes/.../customers-json`. Backticks around the path.
+Self-describing formats	JSON, Parquet. Schema can be read from the files, so direct queries work well.
+text.`path`	Reads each line as one row in a single string column named value.
+binaryFile.`path`	Returns path, modificationTime, length, and content (raw bytes) per file. Used for images or unstructured files.
+_metadata.file_name	Hidden column with the source file name for each row. Replaces input_file_name(), which is deprecated.
+read_files()	SQL function to read files with options. Example: SELECT * FROM read_files('path', format => 'csv', header => true, delimiter => ';').
+Why CTAS fails on CSV	CTAS takes no file options. CSV needs header and delimiter options. Fix: temp view with USING CSV OPTIONS, then CTAS from the view, or use read_files.
+CREATE TABLE ... USING CSV OPTIONS	Makes a non-Delta external table over CSV files. No Delta features (no time travel). May show stale data.
+REFRESH TABLE	Clears cached data for a table so new source files show up.
+CTAS	CREATE TABLE AS SELECT. Makes a table from a query. Schema comes from the query. No manual schema.
+CREATE OR REPLACE TABLE	Fully replaces the table, including schema. Keeps table history.
+INSERT OVERWRITE	Replaces all rows. Table must exist. Fails if the new data has a different schema.
+INSERT INTO	Appends rows. Running it twice adds duplicates.
+MERGE INTO	Upsert: update matching rows, insert new ones. Avoids duplicates. WHEN MATCHED / WHEN NOT MATCHED.
+COPY INTO	Loads files into a table. Idempotent: files already loaded are skipped on rerun.
+Idempotent	Running it again gives the same result. No extra rows or damage.
+: operator on JSON strings	Reads a field from a JSON string column. Example: profile:address:country.
+from_json()	Turns a JSON string into a struct. Needs a schema, often from schema_of_json().
+Struct field access	Use dot: profile_struct.first_name. Use .* to expand all fields into columns.
+explode()	Turns each element of an array into its own row.
+collect_set()	Aggregate that gathers unique values into an array.
+flatten()	Turns an array of arrays into one array.
+array_distinct()	Removes duplicate values from an array.
+PIVOT	Turns row values into columns. Used to reshape data for reports.
+UNION / INTERSECT / MINUS	UNION: rows from both. INTERSECT: rows in both. MINUS (EXCEPT): rows in first but not second.
+FILTER(array, x -> condition)	Higher-order function. Keeps array elements that meet the condition.
+TRANSFORM(array, x -> expr)	Higher-order function. Applies an expression to each element of an array.
+SQL UDF	CREATE FUNCTION name(param TYPE) RETURNS TYPE RETURN expression. Stored in the catalog. Usable in SQL.
+CASE WHEN	If/else logic in SQL. Often used inside SQL UDFs.
+spark.table('name')	Reads a table into a DataFrame.
+df.write.mode('append').saveAsTable()	Writes a DataFrame to a table. Modes: append, overwrite.
+Structured Streaming	Treats incoming data as a table that keeps growing. Processes new data incrementally.
+spark.readStream	Reads a source as a stream.
+Checkpoint location	Stores stream progress so it can restart where it stopped. Gives exactly-once processing.
+trigger(availableNow=True)	Processes all available data in micro-batches, then stops.
+trigger(processingTime='5 seconds')	Runs a micro-batch every 5 seconds. Default is about every 0.5 seconds.
+outputMode('append')	Writes only new rows. Default mode.
+outputMode('complete')	Rewrites the whole result every batch. Needed for aggregations.
+Unsupported in streaming	Sorting and some deduplication are not supported on a stream without extra steps (like watermarking).
+Auto Loader	Incrementally loads new files from cloud storage. Uses format cloudFiles in readStream.
+cloudFiles.format	Option that tells Auto Loader the file type (json, csv, parquet).
+cloudFiles.schemaLocation	Where Auto Loader stores the inferred schema and tracks schema changes.
+Auto Loader vs COPY INTO	Auto Loader: millions of files, streaming, scales well. COPY INTO: thousands of files, simple batch SQL.
+Medallion (multi-hop) architecture	Bronze: raw data. Silver: cleaned and joined. Gold: aggregated for reports.
+Bronze layer	Raw ingested data, as-is, often with ingestion time and source file.
+Silver layer	Cleaned, filtered, deduplicated, and joined data.
+Gold layer	Business-level aggregates for dashboards and reports.
+Lakeflow Declarative Pipelines (formerly DLT)	Framework to build pipelines by declaring tables. Databricks handles order, retries, and quality checks.
+Streaming table	Pipeline table that processes only new data. CREATE OR REFRESH STREAMING TABLE.
+Materialized view	Pipeline table whose result is kept up to date from its query. CREATE OR REFRESH MATERIALIZED VIEW.
+STREAM() in pipeline SQL	Reads another table incrementally as a stream. Example: FROM STREAM(orders_bronze).
+Expectation (CONSTRAINT ... EXPECT)	Data quality rule on a pipeline table.
+ON VIOLATION (none)	Default. Keeps bad rows and records them in metrics.
+ON VIOLATION DROP ROW	Drops bad rows. Counts them in metrics.
+ON VIOLATION FAIL UPDATE	Stops the pipeline update when a row fails.
+Pipeline triggered vs continuous	Triggered: runs once and stops. Continuous: keeps running and processes data as it arrives.
+Development vs production mode	Development: reuses cluster, no retries, easier debugging. Production: new cluster per run, retries on failure.
+APPLY CHANGES INTO / AUTO CDC	Processes change data capture (CDC) feeds: inserts, updates, deletes in order by a sequence column.
+Event log	Pipeline log with run details, data quality metrics, and lineage.
+Lakeflow Jobs (Workflows)	Schedules and runs tasks: notebooks, pipelines, SQL, scripts.
+Task dependencies	A task runs only after the tasks it depends on succeed. Forms a DAG (graph with no loops).
+Repair run	Reruns only the failed tasks and the tasks after them.
+Job schedule	Set with a cron-like trigger. Can also run on file arrival or continuously.
+Job notifications	Send alerts by email or webhook on start, success, or failure.
+SQL warehouse	Compute for running SQL queries and dashboards in Databricks SQL.
+Alert	Runs a query on a schedule and notifies when a value crosses a threshold.
+Dashboard refresh schedule	Re-runs the dashboard's queries on a set schedule.
+Unity Catalog	Central governance for data and AI: access control, audit, lineage, and discovery across workspaces.
+Metastore	Top-level Unity Catalog container. One per region. Holds catalogs.
+UC object hierarchy	Metastore > Catalog > Schema > Table / View / Volume / Function.
+GRANT	GRANT SELECT ON TABLE t TO `group`. Gives a privilege.
+REVOKE	REVOKE SELECT ON TABLE t FROM `group`. Removes a privilege.
+USE CATALOG / USE SCHEMA privileges	Needed to reach objects inside. SELECT on a table is not enough without them.
+SHOW GRANTS ON object	Lists who has which privileges on an object.
+Object owner	Has all privileges on the object and can grant them to others.
+Dynamic view	View using functions like current_user() or is_account_group_member() to hide rows or columns per user.
+Row filter / column mask	Unity Catalog rules attached to a table to limit rows or hide column values per user.
+Delta Sharing	Open protocol to share live data with other teams or companies without copying it.
+Lakehouse Federation	Query outside databases (like MySQL, Postgres) from Databricks without moving the data.
+Lineage	Unity Catalog tracks which tables and columns feed which others.
