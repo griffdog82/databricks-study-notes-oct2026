@@ -778,7 +778,7 @@ SELECT * FROM parquet.`/Volumes/demoworkspace/default/bookstore_dataset/orders-n
 | UNION vs UNION ALL | UNION drops duplicates. UNION ALL keeps them. |
 | MINUS | Same as EXCEPT. |
 | PIVOT without IN list | The IN list names the new columns. |
-
+###BOOKMARK -> 208pm 10/11/2026
 ## 2.4 Higher Order Functions and SQL UDFs
 
 ### Higher order functions
