@@ -56,6 +56,12 @@ Predefined list of pipelines, ingest data directly into a streaming delta table
 
 - All data movement happens in the data plane (on your controlled compute, not Databricks).
 
+### Query-based connectors
+
+These ingest data from databases by querying the source directly, without requiring CDC (change data capture) configuration. These use a cursor column, an only-increasing timestamp or integer column, to track rows that are new or updated after the last pipeline run.
+
+These QBCs require Unity Catalog connections.
+
 ### Lakeflow Connect (Types of Connectors)
 
 - Connectors are the actual methods data gets into the system
