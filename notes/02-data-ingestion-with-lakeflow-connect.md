@@ -62,6 +62,12 @@ These ingest data from databases by querying the source directly, without requir
 
 These QBCs require Unity Catalog connections.
 
+These are only run as scheduled runs, and support the following history tracking modes.
+
+- SCD_TYPE_1 → Overwrites the existing row in the destination table with the latest source row. The destination table preserves no history.
+- SCD_TYPE_2 → Adds metadata tracking, so each version of the table is tracked.
+- APPEND_ONLY → Appends new data only; no merging or overwriting.
+
 ### Lakeflow Connect (Types of Connectors)
 
 - Connectors are the actual methods data gets into the system
