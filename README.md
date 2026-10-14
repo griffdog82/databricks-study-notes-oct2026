@@ -55,7 +55,7 @@ Exam: 2026-10-11, 11am. Notes exported from Notion on 2026-10-09. Images were no
 - [Exam master sheet](exam-master.md)
 - [Free Edition vs Azure review](free-edition-review.md)
 - [Quizlet cards](quizlet/cards.txt)
-- [GitHub Copilot Pilot — Key Questions](notes/13-github-copilot-pilot-key-questions.md) (not Databricks)
+- [GitHub Copilot Pilot — Discussion Questions](notes/13-github-copilot-pilot-key-questions.md) (not Databricks)
 - [Course notebooks](course-notebooks/) (one folder per video, plus labs)
 
   - Extra: [1.0 - Creating Clusters.py](course-notebooks/Extra/1.0%20-%20Creating%20Clusters.py), [1.0L - Creating Clusters.py](course-notebooks/Extra/1.0L%20-%20Creating%20Clusters.py), [1.0L Solution - Creating Clusters.py](course-notebooks/Extra/1.0L%20Solution%20-%20Creating%20Clusters.py)
