@@ -2,6 +2,10 @@
 
 Exam: 2026-10-11, 11am. Notes exported from Notion on 2026-10-09. Images were not copied.
 
+## Oral quiz
+
+- [Oral test bank](quiz/oral-test-bank.md) (questions for a voice-mode LLM to quiz aloud; answers with one-line reasons)
+
 ## Notes (from Notion)
 
 1. [Commands to Know](notes/01-commands-to-know.md)
