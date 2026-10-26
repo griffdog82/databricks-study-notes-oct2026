@@ -1,7 +1,7 @@
 # Databricks Data Engineer Associate: Master Study File
 
-Last updated: 2026-10-04.
-Exam: Sunday 2026-10-11 at 11am.
+Last updated: 2026-10-26 (exam date and study-plan context).
+Exam: Sunday, November 29, 2026 (2026-11-29), confirmed by the user on 2026-10-26. Time and timezone not yet confirmed.
 Owner: G-Man.
 
 This file is the main reference for exam prep. Other notes and chats should use it as the source of truth.
@@ -24,6 +24,8 @@ Sources:
 ---
 
 ## 2. The math
+
+Historical assessment from 2026-10-04: the coverage labels and risk estimates below have not been reassessed against later notes or current oral performance. Later Jobs notes cover control flow and triggers, and the [oral test bank](quiz/oral-test-bank.md) added on October 16 records previously missed questions. Treat these estimates as study-planning hypotheses, not a current score prediction.
 
 How the numbers work:
 
@@ -149,7 +151,17 @@ Your Notion notes could not be checked. The Notion connection failed in this ses
 
 ---
 
-## 5. What this means for the week
+## 5. Next-study sequence (updated 2026-10-26)
+
+Use the [oral test bank](quiz/oral-test-bank.md). Ask one question at a time, wait for an answer in the user's own words, then check it against official Databricks documentation. Give a brief correction and revisit misses in later sessions. Do not assume that written coverage means mastery.
+
+1. Start with Part 1 (M1–M7): previously missed explode/explode_outer, MERGE direction, row filters, column masks, managed/external tables, and JSON/schema handling.
+2. Drill Jobs: repair runs and dependent tasks, trigger selection, sequence/funnel/fan-out, run-if versus if/else, and For each. Use scenarios to reassess the newer notes.
+3. Reassess ingestion: Auto Loader evolution/rescue, checkpoints, availableNow, COPY INTO versus Lakeflow Connect, and ingestion-method selection.
+4. Close bundle and troubleshooting gaps: environment targets/variables, validate/deploy/run, run history, Spark UI skew/shuffles, and memory/startup failures.
+5. Mix transformation and governance scenarios, then use timed mixed practice to choose remaining drills before November 29. Revisit wrong answers after a delay; do not mark topics mastered merely because they appear in notes.
+
+### Original October 4 plan (historical)
 
 1. Finish the course videos first, as planned: 2.5, then sections 3, 4, and 5.
 2. While watching, add cards for the Partial items above that the course teaches.
