@@ -1,6 +1,6 @@
 # Databricks Data Engineer Associate — Study Notes
 
-Exam: 2026-10-11, 11am. Notes exported from Notion on 2026-10-09. Images were not copied.
+Exam: November 29, 2026 (2026-11-29), confirmed by the user on 2026-10-26. Time and timezone not yet confirmed. Notes exported from Notion on 2026-10-09. Images were not copied.
 
 ## Oral quiz
 
