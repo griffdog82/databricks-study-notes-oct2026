@@ -59,6 +59,7 @@ Exam: November 29, 2026 (2026-11-29), confirmed by the user on 2026-10-26. Time 
 - [Exam master sheet](exam-master.md)
 - [Free Edition vs Azure review](free-edition-review.md)
 - [Quizlet cards](quizlet/cards.txt)
+- [GitHub Copilot Pilot — Discussion Questions](notes/13-github-copilot-pilot-key-questions.md) (not Databricks)
 - [Course notebooks](course-notebooks/) (one folder per video, plus labs)
 
   - Extra: [1.0 - Creating Clusters.py](course-notebooks/Extra/1.0%20-%20Creating%20Clusters.py), [1.0L - Creating Clusters.py](course-notebooks/Extra/1.0L%20-%20Creating%20Clusters.py), [1.0L Solution - Creating Clusters.py](course-notebooks/Extra/1.0L%20Solution%20-%20Creating%20Clusters.py)
