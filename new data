@@ -1,0 +1,21 @@
+2027 health plan comparison	Choice POS II	HDHP Gold
+Premium per paycheck	142.50	111.13
+Paychecks per year	26	=B3
+Dr. Frank visits this year	12	=B4
+Price per Dr. Frank visit	35	110
+DC visits this year	1	=B6
+DC fee per visit	115	=B7
+DC visits I expect to file	0	=B8
+Amount Aetna recognizes per filed DC visit		
+Out-of-network deductible	1150	2000
+Aetna pays above that deductible	65%	60%
+Employer puts into my account	0	500
+Amount I choose to put into my FSA or HSA	0	0
+Estimated tax savings rate	25%	=B14
+YEARLY RESULTS	Choice POS II	HDHP Gold
+Annual premiums	=B2*B3	=C2*C3
+My cost for Dr. Frank	=B4*B5	=MIN(C4*C5,2000)+20%*MAX(0,C4*C5-2000)
+DC provider bills	=B6*B7	=C6*C7
+Estimated DC reimbursement	=MAX(0,B8*B9-B10)*B11	=MAX(0,C8*C9-C10)*C11
+Tax saved on my FSA or HSA contribution	=B13*B14	=C13*C14
+Estimated yearly cost so far	=B16+B17+B18-B19-B12-B20	=C16+C17+C18-C19-C12-C20
